@@ -4,6 +4,7 @@ use proc_macro2::TokenStream as TokenStream2;
 #[proc_macro]
 pub fn seq_failed(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as failed::Seq);
+    // It seems the TokenStream yielded from cursor in parse fn cannot be passed
     input.tokens.into()
 }
 
@@ -29,9 +30,11 @@ mod failed {
             let content;
             let brace_token = syn::braced!(content in input);
 
+            // *** Here is the difference ***
             let cursor = content.cursor();
             let tokens = tokens(cursor);
             dbg!(&tokens);
+            // ******************************
 
             Ok(Seq { ident,
                      brace_token,
@@ -56,7 +59,9 @@ mod succeeded {
             let content;
             let brace_token = syn::braced!(content in input);
 
+            // *** Here is the difference ***
             let tokens = content.parse()?;
+            // ******************************
 
             Ok(Seq { ident,
                      brace_token,

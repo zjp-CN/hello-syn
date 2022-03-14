@@ -1,4 +1,4 @@
-After using `cargo expand`:
+After using `cargo expand` (for succeeded & failed):
 
 ```rust
 [hello-impl/src/lib.rs:34] &tokens = TokenStream [
@@ -41,5 +41,19 @@ extern crate std;
 fn main() {
     let _succeeded = 1;
     ();
+}
+```
+
+After using `cargo expand` (for succeeded & simpler):
+
+```rust
+#![feature(prelude_import)]
+#[prelude_import]
+use std::prelude::rust_2021::*;
+#[macro_use]
+extern crate std;
+fn main() {
+    let _succeeded = 1;
+    let _simpler = 0;
 }
 ```
